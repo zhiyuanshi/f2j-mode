@@ -9,7 +9,7 @@ Clone the project:
 
     $ git clone https://github.com/zhiyuanshi/f2j-mode.git
 
-Add the elisp library to your `load-path` and require the library.
+Add the directory to your `load-path` and require the library.
 
     (add-to-list 'load-path "#{Path to your just-cloned directory}")
     (require 'f2j-mode)
