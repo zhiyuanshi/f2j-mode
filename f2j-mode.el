@@ -32,13 +32,46 @@
     ("\\<\\(let\\|type\\|module\\|end\\)\\>" . font-lock-keyword-face)
     ("\\<\\([[:upper:]][[:alnum:]_]*\\)\\>" . font-lock-type-face)
     ("=\\|:\\|->" . font-lock-function-name-face)
-    ("^[ \t]*--.*" . font-lock-comment-face) ;; Why is this not working at the moment?
-  ))
+    ("^[ \t]*--.*" . font-lock-comment-face)
+    ))
+
+;; syntax table
+(defvar f2j-mode-syntax-table nil "Syntax table for `f2j-mode'.")
+
+(setq f2j-mode-syntax-table
+      (let ((synTable (make-syntax-table)))
+
+        ;; comment style: "-- ..."
+        (modify-syntax-entry ?- ". 12b" synTable)
+        (modify-syntax-entry ?\n "> b" synTable)
+
+        synTable))
+
+(defun f2j-comment-dwim (arg)
+  "Comment or uncomment current line or region in a smart way.
+For detail, see `comment-dwim'."
+  (interactive "*P")
+  (require 'newcomment)
+  (let (
+        (comment-start "--") (comment-end "")
+        )
+    (comment-dwim arg)))
+
+(defvar f2j-mode-map
+  (let ((map (make-keymap)))
+    (define-key map [remap comment-dwim] 'f2j-comment-dwim)
+    map)
+  "Keymap for f2j major mode")
 
 (define-derived-mode f2j-mode prog-mode
+  "f2j-mode is a major mode for editing f2j source code."
+  (set-syntax-table f2j-mode-syntax-table)
+  (use-local-map f2j-mode-map)
   (setq font-lock-defaults '(f2j-font-lock-defaults))
   (setq mode-name "F2J"))
 
+
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.sf\\'" . f2j-mode))
 
 (provide 'f2j-mode)
