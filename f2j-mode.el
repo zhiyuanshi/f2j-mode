@@ -35,40 +35,40 @@
     ("^[ \t]*--.*" . font-lock-comment-face)
     ))
 
+(defvar f2j-mode-map (make-sparse-keymap)
+  "Keymap for f2j major mode.")
+
 ;; syntax table
-(defvar f2j-mode-syntax-table nil "Syntax table for `f2j-mode'.")
+;; some copied from idris-mode.el
+(defconst f2j-mode-syntax-table
+  (let ((st (make-syntax-table)))
 
-(setq f2j-mode-syntax-table
-      (let ((synTable (make-syntax-table)))
+    ;; comment style: "-- ..."
+    (modify-syntax-entry ?- ". 12b" st)
+    (modify-syntax-entry ?\n "> b" st)
 
-        ;; comment style: "-- ..."
-        (modify-syntax-entry ?- ". 12b" synTable)
-        (modify-syntax-entry ?\n "> b" synTable)
+    ;; ' and _ can be names
+    (modify-syntax-entry ?' "w" st)
+    (modify-syntax-entry ?_ "w" st)
 
-        synTable))
+    ;; Whitespace is whitespace
+    (modify-syntax-entry ?\  " " st)
+    (modify-syntax-entry ?\t " " st)
 
-(defun f2j-comment-dwim (arg)
-  "Comment or uncomment current line or region in a smart way.
-For detail, see `comment-dwim'."
-  (interactive "*P")
-  (require 'newcomment)
-  (let (
-        (comment-start "--") (comment-end "")
-        )
-    (comment-dwim arg)))
+    ;; ;; Strings
+    (modify-syntax-entry ?\" "\"" st)
+    (modify-syntax-entry ?\\ "/" st)
 
-(defvar f2j-mode-map
-  (let ((map (make-keymap)))
-    (define-key map [remap comment-dwim] 'f2j-comment-dwim)
-    map)
-  "Keymap for f2j major mode")
+    st)
+  "Syntax table for `f2j-mode'.")
 
-(define-derived-mode f2j-mode prog-mode
+(define-derived-mode f2j-mode prog-mode "F2J"
   "f2j-mode is a major mode for editing f2j source code."
-  (set-syntax-table f2j-mode-syntax-table)
+  :syntax-table f2j-mode-syntax-table
+  :group 'f2j
   (use-local-map f2j-mode-map)
-  (setq font-lock-defaults '(f2j-font-lock-defaults))
-  (setq mode-name "F2J"))
+  (set (make-local-variable 'font-lock-defaults) '(f2j-font-lock-defaults))
+  (set (make-local-variable 'comment-start) "--"))
 
 
 ;;;###autoload
