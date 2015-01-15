@@ -15,3 +15,8 @@ Add the directory to your `load-path` and require the library.
     (require 'f2j-mode)
 
 And you're good to go! F2J mode will be automatically turned on for `.sf` files.
+
+## TODO
+
+1. Add indentation feature
+2. Add basic interaction with `f2j` command and options 
