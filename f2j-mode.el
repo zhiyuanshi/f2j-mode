@@ -29,16 +29,49 @@
 ;; http://www.emacswiki.org/emacs/RegularExpression
 (defconst f2j-font-lock-defaults
   '(
-    ("\\<\\(let\\|type\\|module\\|end\\)\\>" . font-lock-keyword-face)
+    ("\\<\\(let\\|type\\|module\\|end\\|then\\|else\\|if\\)\\>" . font-lock-keyword-face)
     ("\\<\\([[:upper:]][[:alnum:]_]*\\)\\>" . font-lock-type-face)
     ("=\\|:\\|->" . font-lock-function-name-face)
-    ("^[ \t]*--.*" . font-lock-comment-face) ;; Why is this not working at the moment?
-  ))
+    ("^[ \t]*--.*" . font-lock-comment-face)
+    ))
 
-(define-derived-mode f2j-mode prog-mode
-  (setq font-lock-defaults '(f2j-font-lock-defaults))
-  (setq mode-name "F2J"))
+(defvar f2j-mode-map (make-sparse-keymap)
+  "Keymap for f2j major mode.")
 
+;; syntax table
+;; some copied from idris-mode.el
+(defconst f2j-mode-syntax-table
+  (let ((st (make-syntax-table)))
+
+    ;; comment style: "-- ..."
+    (modify-syntax-entry ?- ". 12b" st)
+    (modify-syntax-entry ?\n "> b" st)
+
+    ;; ' and _ can be names
+    (modify-syntax-entry ?' "w" st)
+    (modify-syntax-entry ?_ "w" st)
+
+    ;; Whitespace is whitespace
+    (modify-syntax-entry ?\  " " st)
+    (modify-syntax-entry ?\t " " st)
+
+    ;; ;; Strings
+    (modify-syntax-entry ?\" "\"" st)
+    (modify-syntax-entry ?\\ "/" st)
+
+    st)
+  "Syntax table for `f2j-mode'.")
+
+(define-derived-mode f2j-mode prog-mode "F2J"
+  "f2j-mode is a major mode for editing f2j source code."
+  :syntax-table f2j-mode-syntax-table
+  :group 'f2j
+  (use-local-map f2j-mode-map)
+  (set (make-local-variable 'font-lock-defaults) '(f2j-font-lock-defaults))
+  (set (make-local-variable 'comment-start) "--"))
+
+
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.sf\\'" . f2j-mode))
 
 (provide 'f2j-mode)
