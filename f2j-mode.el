@@ -2,6 +2,8 @@
 
 ;; Copyright (C) 2015 Zhiyuan Shi
 
+;; Package-Requires: ((emacs "24") (quickrun "2.2.1"))
+
 ;; Author: 2015 Zhiyuan Shi
 ;; URL: https://github.com/zhiyuanshi/f2j-mode
 
@@ -29,7 +31,7 @@
 ;; http://www.emacswiki.org/emacs/RegularExpression
 (defconst f2j-font-lock-defaults
   '(
-    ("\\<\\(let\\|type\\|module\\|end\\|then\\|else\\|if\\)\\>" . font-lock-keyword-face)
+    ("\\<\\(let\\|type\\|module\\|end\\|then\\|else\\|if\\|in\\)\\>" . font-lock-keyword-face)
     ("\\<\\([[:upper:]][[:alnum:]_]*\\)\\>" . font-lock-type-face)
     ("=\\|:\\|->" . font-lock-function-name-face)
     ("^[ \t]*--.*" . font-lock-comment-face)
@@ -42,6 +44,12 @@
 ;; some copied from idris-mode.el
 (defconst f2j-mode-syntax-table
   (let ((st (make-syntax-table)))
+
+    ;; Matching parens
+    (modify-syntax-entry ?\( "()" st)
+    (modify-syntax-entry ?\) ")(" st)
+    (modify-syntax-entry ?\[ "(]" st)
+    (modify-syntax-entry ?\] ")[" st)
 
     ;; comment style: "-- ..."
     (modify-syntax-entry ?- ". 12b" st)
@@ -70,6 +78,16 @@
   (set (make-local-variable 'font-lock-defaults) '(f2j-font-lock-defaults))
   (set (make-local-variable 'comment-start) "--"))
 
+
+(eval-after-load 'quickrun
+  '(progn
+     (quickrun-add-command "f2j"
+                           '((:command . "f2j")
+                             (:exec . "%c -r %s")
+                             (:compile-only . "%c %s")
+                             (:description . "Compile f2j source file with f2j and execute"))
+                           :mode 'f2j-mode)
+     (define-key f2j-mode-map (kbd "C-c C-r") 'quickrun-compile-only)))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.sf\\'" . f2j-mode))
