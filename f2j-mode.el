@@ -31,7 +31,7 @@
 ;; http://www.emacswiki.org/emacs/RegularExpression
 (defconst f2j-font-lock-defaults
   '(
-    ("\\<\\(let\\|type\\|module\\|end\\|then\\|else\\|if\\|in\\)\\>" . font-lock-keyword-face)
+    ("\\<\\(let\\|rec\\|type\\|module\\|end\\|then\\|else\\|if\\|in\\)\\>" . font-lock-keyword-face)
     ("\\<\\([[:upper:]][[:alnum:]_]*\\)\\>" . font-lock-type-face)
     ("=\\|:\\|->" . font-lock-function-name-face)
     ("^[ \t]*--.*" . font-lock-comment-face)
