@@ -14,11 +14,11 @@ package.el.
 
 Then Clone the project:
 
-    $ git clone https://github.com/zhiyuanshi/f2j-mode.git
+    $ git clone https://github.com/zhiyuanshi/f2j-mode.git /path/to/f2j-mode/directory
 
-Add the directory to your `load-path` and require the library.
+Add to `.emacs.el` (or equivalent):
 
-    (add-to-list 'load-path "#{Path to your just-cloned directory}")
+    (add-to-list 'load-path /path/to/f2j-mode/directory)
     (require 'f2j-mode)
     (require 'quickrun)
 
