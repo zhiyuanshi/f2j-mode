@@ -26,8 +26,11 @@ And you're good to go! F2J mode will be automatically turned on for `.sf` files.
 
 ## Interactive Commands
 
-`C-c C-r` will invoke `f2j` command and compile the source file. You
-can also `M-x quickrun` to compile and run the source file.
+`C-c C-r` will invoke `f2j` command to compile and run the source
+file. You can also `C-u C-u C-c C-r` to only compile the source file.
+
+`M-x quickrun-with-arg` can be used to specify command line options,
+e.g. `-m apply -m stack`.
 
 ## TODO
 

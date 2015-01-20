@@ -83,11 +83,11 @@
   '(progn
      (quickrun-add-command "f2j"
                            '((:command . "f2j")
-                             (:exec . "%c -r %s")
+                             (:exec . "%c -r %s %a")
                              (:compile-only . "%c %s")
                              (:description . "Compile f2j source file with f2j and execute"))
                            :mode 'f2j-mode)
-     (define-key f2j-mode-map (kbd "C-c C-r") 'quickrun-compile-only)))
+     (define-key f2j-mode-map (kbd "C-c C-r") 'quickrun)))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.sf\\'" . f2j-mode))
